@@ -1,0 +1,7 @@
+{
+  "name": "Nectar",
+  "description": "A macOS-style dynamic island, notch, dock, and calendar utility.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

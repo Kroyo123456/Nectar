@@ -19,6 +19,8 @@ import {
 import type { SettingsTab } from "./settings/index";
 import { initTheme } from "./theme";
 import { useT } from "./i18n";
+import { DynamicThemeProvider } from "./context/DynamicThemeContext";
+import "./mock/tauriMock";
 import "./Settings.css";
 
 const appWindow = getCurrentWebviewWindow();
@@ -283,8 +285,14 @@ function SettingsApp() {
   );
 }
 
-createRoot(document.getElementById("root") as HTMLElement).render(
-  <StrictMode>
-    <SettingsApp />
-  </StrictMode>
-);
+export { SettingsApp };
+
+if (document.getElementById("root")) {
+  createRoot(document.getElementById("root") as HTMLElement).render(
+    <StrictMode>
+      <DynamicThemeProvider>
+        <SettingsApp />
+      </DynamicThemeProvider>
+    </StrictMode>
+  );
+}

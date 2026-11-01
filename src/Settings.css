@@ -1441,3 +1441,158 @@ input:checked + .slider:before {
     justify-content: flex-start;
     max-width: none;
 }
+
+/* ── Dynamic Theme Controls ── */
+.dynamic-palette-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.dynamic-palette-swatches {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+}
+
+.dynamic-swatch-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--nectar-group-bg, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--nectar-border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+  padding: 6px 4px;
+  min-width: 0;
+}
+
+.dynamic-swatch-circle {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease;
+}
+
+.dynamic-swatch-item:hover .dynamic-swatch-circle {
+  transform: scale(1.1);
+}
+
+.dynamic-swatch-role {
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--nectar-text-muted, rgba(255, 255, 255, 0.5));
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.dynamic-swatch-hex {
+  font-size: 9.5px;
+  font-family: monospace;
+  color: var(--nectar-text, rgba(255, 255, 255, 0.85));
+}
+
+.dynamic-preset-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 6px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.dynamic-preset-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--nectar-group-bg, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--nectar-border, rgba(255, 255, 255, 0.08));
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--nectar-text-muted, rgba(255, 255, 255, 0.65));
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.dynamic-preset-card:hover {
+  background: var(--nectar-border, rgba(255, 255, 255, 0.1));
+  color: var(--nectar-text, white);
+}
+
+.dynamic-preset-card.active {
+  background: var(--nectar-border, rgba(255, 255, 255, 0.15));
+  border-color: var(--nectar-accent, #007aff);
+  color: var(--nectar-text, white);
+  box-shadow: 0 0 0 1px var(--nectar-accent, #007aff);
+}
+
+.dynamic-preset-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--nectar-accent, #007aff);
+}
+
+.dynamic-slider-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.dynamic-slider-badge {
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 44px;
+  text-align: right;
+  color: var(--nectar-text, rgba(255, 255, 255, 0.9));
+  font-variant-numeric: tabular-nums;
+}
+
+.dynamic-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  width: 100%;
+}
+
+.dynamic-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 11.5px;
+  font-weight: 500;
+  border-radius: 8px;
+  background: var(--nectar-group-bg, rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--nectar-border, rgba(255, 255, 255, 0.08));
+  color: var(--nectar-text, white);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dynamic-btn:hover:not(:disabled) {
+  background: var(--nectar-border, rgba(255, 255, 255, 0.14));
+}
+
+.dynamic-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.dynamic-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}

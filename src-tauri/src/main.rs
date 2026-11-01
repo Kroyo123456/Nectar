@@ -20,6 +20,7 @@ mod connections;
 mod audio_devices;
 mod i18n;
 mod shelf;
+mod wallpaper_theme;
 
 use tauri::Manager;
 use windows::Win32::System::Console::SetConsoleCtrlHandler;
@@ -219,7 +220,8 @@ fn main() {
             calendar_sync::caldav_get_cache,
             ics::ics_add_link,
             ics::ics_remove_link,
-            ics::ics_detect
+            ics::ics_detect,
+            wallpaper_theme::fetch_wallpaper_palette
         ])
         .setup(|app| {
             init_taskbar_marker(app.handle());

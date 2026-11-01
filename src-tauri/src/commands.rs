@@ -4023,3 +4023,5 @@ pub fn pointer_over_notch(window: Window) -> bool {
     let bottom = win_pos.y + (r.height as f64 * scale) as i32;
     pt.x >= left && pt.x <= right && pt.y >= top && pt.y <= bottom
 }
+
+pub use crate::wallpaper_theme::fetch_wallpaper_palette;

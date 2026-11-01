@@ -37,7 +37,11 @@ import {
   MemoryStick,
   HardDrive,
   ArrowUpDown,
+  Sparkles,
 } from "lucide-react";
+import Dock from "./Dock";
+import { SettingsApp } from "./Settings";
+import { useDynamicTheme } from "./hooks/useDynamicTheme";
 
 // Timer chime, synthesized with Web Audio so there's no asset. The context is made on the
 // Start click so autoplay lets it play when the timer ends.
@@ -346,6 +350,17 @@ function App() {
   useEffect(() => {
     return initTheme();
   }, []);
+
+  const [isWebSettingsOpen, setIsWebSettingsOpen] = useState(false);
+  const isWebMock = typeof window !== "undefined" && Boolean((window as any).__TAURI_IS_MOCK__);
+
+  useEffect(() => {
+    const handleOpenSettings = () => setIsWebSettingsOpen(true);
+    window.addEventListener("nectar:open-settings", handleOpenSettings);
+    return () => window.removeEventListener("nectar:open-settings", handleOpenSettings);
+  }, []);
+
+  const { config: dynamicThemeConfig } = useDynamicTheme();
 
   const [time, setTime] = useState("");
   const [dualTime, setDualTime] = useState("");
@@ -1513,12 +1528,16 @@ function App() {
   }, [sendBrightness]);
 
   const openSettingsWindow = useCallback(async () => {
+    if (isWebMock) {
+      setIsWebSettingsOpen(true);
+      return;
+    }
     try {
       await invoke("open_settings_window");
     } catch (e) {
       console.error("Failed to open settings window:", e);
     }
-  }, []);
+  }, [isWebMock]);
 
   const handleWifiRightClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -2596,6 +2615,72 @@ function App() {
 
       </motion.div>
     </div>
+
+    {/* Web Preview Desktop Environment */}
+    {isWebMock && (
+      <>
+        {/* Dynamic Desktop Wallpaper Backdrop */}
+        <div
+          className="fixed inset-0 -z-10 pointer-events-none transition-all duration-700 ease-out"
+          style={{
+            background: "radial-gradient(circle at 50% 25%, var(--nectar-dynamic-bg, #0B1120) 0%, #030712 100%)",
+            opacity: 0.95,
+          }}
+        />
+
+        {/* macOS-style Dock at bottom */}
+        <div className="fixed bottom-0 left-0 right-0 z-30 pointer-events-auto">
+          <Dock />
+        </div>
+
+        {/* Quick Launch Floating Badge for Dynamic Theme Settings */}
+        <div className="fixed bottom-4 right-4 z-40 flex items-center gap-2">
+          <button
+            onClick={() => setIsWebSettingsOpen((prev) => !prev)}
+            className="flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-medium shadow-xl backdrop-blur-xl transition-all cursor-pointer border"
+            style={{
+              backgroundColor: "var(--nectar-group-bg, rgba(20, 20, 26, 0.88))",
+              borderColor: "var(--nectar-border, rgba(255, 255, 255, 0.15))",
+              color: "var(--nectar-text, #ffffff)",
+            }}
+            title="Configure Dynamic Theme Controls & Settings"
+          >
+            <Sparkles size={12} className={dynamicThemeConfig.syncWithWallpaper ? "text-amber-400" : "opacity-70"} />
+            <div
+              className="w-2.5 h-2.5 rounded-full shadow-sm"
+              style={{ backgroundColor: "var(--nectar-dynamic-primary, var(--nectar-accent, #007aff))" }}
+            />
+            <span>Dynamic Theme</span>
+          </button>
+        </div>
+
+        {/* Interactive Floating Settings Window */}
+        {isWebSettingsOpen && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-md animate-fade-in"
+            onClick={() => setIsWebSettingsOpen(false)}
+          >
+            <div
+              className="relative w-full max-w-[640px] h-[510px] rounded-xl overflow-hidden shadow-2xl border"
+              style={{
+                borderColor: "var(--nectar-border, rgba(255, 255, 255, 0.15))",
+                backgroundColor: "var(--nectar-bg, rgba(16, 16, 22, 0.96))",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setIsWebSettingsOpen(false)}
+                className="absolute top-2.5 right-3 z-50 text-white/50 hover:text-white p-1 rounded-md text-xs cursor-pointer hover:bg-white/10 transition-colors"
+                title="Close Settings Window"
+              >
+                ✕
+              </button>
+              <SettingsApp />
+            </div>
+          </div>
+        )}
+      </>
+    )}
 
     </div>
   );
